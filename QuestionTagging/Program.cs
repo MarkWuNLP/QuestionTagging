@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -80,11 +81,19 @@ namespace QuestionTagging
 
             Training t = new Training();
             t.TrainingInstancesInit(TrainingInstances, InstancesNeighbours);
-            t.Train();
+            int QFeatureNum = int.Parse(ConfigurationManager.AppSettings["QFeatureNum"]);
+            int TFeatureNum = int.Parse(ConfigurationManager.AppSettings["TFeatureNum"]);
+            int Max_Iter = int.Parse(ConfigurationManager.AppSettings["Max_Iter"]);
+            double LearningRate = double.Parse(ConfigurationManager.AppSettings["LearningRate"]);
+            double Lamda = double.Parse(ConfigurationManager.AppSettings["Lamda"]);
+            double StopGap = double.Parse(ConfigurationManager.AppSettings["StopGap"]);
+
+            t.Train(QFeatureNum, TFeatureNum, Max_Iter, LearningRate, Lamda, StopGap);
         }
 
         static void Main(string[] args)
         {
+            
             Program.Train();
         }
     }

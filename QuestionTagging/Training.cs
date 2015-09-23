@@ -9,18 +9,22 @@ namespace QuestionTagging
 {
     class Training
     {
-        const int TAGFEATURENUM = 3;
-        const int QUESTIONFEATURENUM = 3;
+        int TAGFEATURENUM = 3;
+        int QUESTIONFEATURENUM = 3;
         double loss = 0;
+        double lastLoss = double.MaxValue;
         double learningrate = 0.01;
         double lamda = 0.001;
         double alpha = 0.5;
+        int MAX_Iter = 0;
+        double Stop_Gap = 0;
 
         Matrix[] tagSimFeatures; //xi
         Vector[] questionSimFeatures; //theta
         Vector tagSimWeights; //denoted by w in paper
         Vector questionSimWeights; // denoted by v in paper
         Matrix[] DeriviationH;
+        Vector DerivateForPi;
 
         Matrix tagSim;
         Vector questionsim; 
@@ -54,12 +58,19 @@ namespace QuestionTagging
            
         }
 
-        public void Train()
+        public void Train(int QFeatureNum, int TFeatureNum, int MaxIter, double LearningRate, double Lamda, double StopGap)
         {
+            this.QUESTIONFEATURENUM = QFeatureNum;
+            this.TAGFEATURENUM = TFeatureNum;
+            this.learningrate = LearningRate;
+            this.lamda = Lamda;
+            this.MAX_Iter = MaxIter;
+            this.Stop_Gap = StopGap;
+
             MathNet.Numerics.Distributions.ContinuousUniform normal = new MathNet.Numerics.Distributions.ContinuousUniform();
             tagSimWeights = (Vector)Vector.Build.Random(TAGFEATURENUM, normal);
             questionSimWeights = (Vector)Vector.Build.Random(QUESTIONFEATURENUM, normal);
-            for (int t = 0; t < 300; t++)
+            for (int t = 0; t < this.MAX_Iter; t++)
             {
                 loss = 0;
                 DenseVector Deriviate_W = new DenseVector(QUESTIONFEATURENUM);
@@ -95,7 +106,8 @@ namespace QuestionTagging
                             tagQuestionFeature.Add(candidate.Key, tmp_v);
                         }
                     }
-                    ComputeTagSim();
+                    ComputeTagSim(); 
+                    DerivateForPi = null;
                     ComputeTagSignificance(neighbours);
                     ComputeQuestionSim(question, neighbours);
                     ComputeQuestionTagSimHeriusticlly(question);
@@ -119,11 +131,19 @@ namespace QuestionTagging
                 }
                 for (int i = 0; i < QUESTIONFEATURENUM;i++)
                 {
-                    questionSimWeights[i] -= learningrate * Deriviate_W[i] + lamda*questionSimWeights[i];
+                    questionSimWeights[i] -= learningrate * Deriviate_W[i] + this.lamda * questionSimWeights[i];
                 }
                 for (int i = 0; i < TAGFEATURENUM;i++)
                 {
-                    tagSimWeights[i] -= learningrate * Deriviate_V[i];
+                    tagSimWeights[i] -= learningrate * Deriviate_V[i] + this.lamda * tagSimWeights[i];
+                }
+                if(lastLoss-loss<StopGap)
+                {
+                    break;
+                }
+                else
+                {
+                    lastLoss = loss;
                 }
                 Console.WriteLine("loss:{0}", loss);
 
@@ -157,9 +177,11 @@ namespace QuestionTagging
             Vector res = new DenseVector(TAGFEATURENUM);
             for (int i = 0; i < TAGFEATURENUM; i++)
             {
-                var t = alpha * (SparseMatrix.CreateIdentity(candidates.Count) - alpha * TranslationMatrix).Inverse() 
-                    * DerivateOfA[i] * tagsignificance;
-               res[i] = DenseVector.OfVector(t)[candidates[postag]];
+                if(DerivateForPi==null)
+                {
+                    DerivateForPi = DenseVector.OfVector(alpha * (SparseMatrix.CreateIdentity(candidates.Count) - alpha * TranslationMatrix).Inverse() * DerivateOfA[i] * tagsignificance);
+                }
+                res[i] = DerivateForPi[candidates[postag]];
             }
             return res;
         }
