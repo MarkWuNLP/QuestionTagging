@@ -14,8 +14,8 @@ namespace QuestionTagging
 
         Matrix[] tagSimFeatures;
         Vector[] questionSimFeatures;
-        double[] tagSimWeights;
-        double[] questionSimWeights;
+        Vector tagSimWeights;
+        Vector questionSimWeights;
 
         Matrix tagSim;
         Vector questionsim;
@@ -29,6 +29,7 @@ namespace QuestionTagging
         public void TagQuestion(Question question, List<Question> neighbours)
         {
             ConstructCandidateTable(neighbours);
+            Init(question,neighbours);
             ComputeTagSim();
             ComputeTagSignificance(neighbours);
             ComputeQuestionSim(question, neighbours);
@@ -36,9 +37,22 @@ namespace QuestionTagging
             RankingTags(question, neighbours);
         }
 
+        private void Init(Question question, List<Question> neighbours)
+        {
+            MathNet.Numerics.Distributions.ContinuousUniform normal = new MathNet.Numerics.Distributions.ContinuousUniform();
+
+            tagSimWeights = (Vector)Vector.Build.Random(TAGFEATURENUM,normal);
+            questionSimWeights = (Vector)Vector.Build.Random(QUESTIONFEATURENUM,normal);
+
+            tagSimFeatures = FeatureExtractor.ExtractTagSim(candidates.Keys.ToList());
+            questionSimFeatures = FeatureExtractor.ExtractQuestionSim(question,neighbours);
+            tagSim = new DenseMatrix(candidates.Count, candidates.Count);
+            questionsim = new DenseVector(neighbours.Count);
+        }
+
         private void ComputeTagSim()
         {
-            tagSim = new DenseMatrix(candidates.Count, candidates.Count);
+
             for (int i = 0; i < TAGFEATURENUM; i++)
             {
                 for (int rowindex = 0; rowindex < candidates.Count; rowindex++)
@@ -93,10 +107,16 @@ namespace QuestionTagging
                     int t_index = candidates[tag.Key];
                     if(tagindex != t_index)
                     {
-                        q_t_t += tagSim[tagindex, t_index];
+                        q_t_t += tagSim[tagindex, t_index] * tag.Value;
                     }
                 }
                 tagScore.Add(candidate.Key,tagsignificance[candidate.Value]*(q_q_t+q_t+q_t_t));
+            }
+
+            var res = tagScore.OrderByDescending(x => x.Value);
+            foreach(var ele in res)
+            {
+                Console.WriteLine(ele);
             }
         }
 
@@ -136,11 +156,11 @@ namespace QuestionTagging
             int i = 0;
             foreach(var candidate in candidates)
             {
-                restartprob[i] = tagFrequency[candidate.Key];
+                restartprob[i++] = tagFrequency[candidate.Key];
             }
             restartprob = restartprob.Normalize(1);
 
-            
+            i = 0;
             for(int rowindex = 0;rowindex<TranslationMatrix.RowCount;rowindex++)
                 for(int columnindex = 0;columnindex<TranslationMatrix.ColumnCount;columnindex++)
                 {

@@ -9,3 +9,10 @@ D:\Github\QuestionTagging\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagg
 D:\Github\QuestionTagging\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagging.pdb
 D:\GitHubProject\QuestionTagging\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagging.exe
 D:\GitHubProject\QuestionTagging\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagging.pdb
+D:\GitHubProject\QuestionTagging\QuestionTagging\QuestionTagging\bin\Debug\QuestionTagging.exe
+D:\GitHubProject\QuestionTagging\QuestionTagging\QuestionTagging\bin\Debug\QuestionTagging.pdb
+D:\GitHubProject\QuestionTagging\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.dll
+D:\GitHubProject\QuestionTagging\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.xml
+D:\GitHubProject\QuestionTagging\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.Data.Text.dll
+D:\GitHubProject\QuestionTagging\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.IO.dll
+D:\GitHubProject\QuestionTagging\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagging.csprojResolveAssemblyReference.cache

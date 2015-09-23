@@ -12,5 +12,12 @@ namespace QuestionTagging
         public List<string> StemWords { get; set; }
         public List<string> RelatedTags { get; set; }
         public List<string> UnRelatedTags { get; set; }
+
+        public Question(string qtext,List<string> stemwords,List<string> tags)
+        {
+            this.QuestionText = qtext;
+            this.StemWords = stemwords;
+            this.RelatedTags = tags;
+        }
     }
 }

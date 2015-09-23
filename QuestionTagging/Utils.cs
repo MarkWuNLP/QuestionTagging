@@ -27,8 +27,8 @@ namespace QuestionTagging
         /// <returns></returns>
         public static double LanguageModel(List<string> QuestionStem, string tag)
         {
-              double res = 0;
-     
+            double res = 0;
+            tag = tag.ToLower();
             List<string> list = tag.Split(' ').ToList();
             for (int i = 0; i < list.Count;i++)
             {
