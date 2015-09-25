@@ -25,6 +25,7 @@ namespace QuestionTagging
         Dictionary<string, int> tagFrequency = new Dictionary<string, int>();
         Dictionary<string, int> candidates = new Dictionary<string, int>();
         Dictionary<string, double> tagQuestionSim = new Dictionary<string, double>();
+        IFeatureExtractor featureExtractor;
 
         public void TagQuestion(Question question, List<Question> neighbours)
         {
@@ -39,13 +40,14 @@ namespace QuestionTagging
 
         private void Init(Question question, List<Question> neighbours)
         {
+            featureExtractor = new RandomFeatureExtractor();
             MathNet.Numerics.Distributions.ContinuousUniform normal = new MathNet.Numerics.Distributions.ContinuousUniform();
 
             tagSimWeights = (Vector)Vector.Build.Random(TAGFEATURENUM,normal);
             questionSimWeights = (Vector)Vector.Build.Random(QUESTIONFEATURENUM,normal);
 
-            tagSimFeatures = FeatureExtractor.ExtractTagSim(candidates.Keys.ToList());
-            questionSimFeatures = FeatureExtractor.ExtractQuestionSim(question,neighbours);
+            tagSimFeatures = featureExtractor.ExtractTagSim(candidates.Keys.ToList());
+            questionSimFeatures = featureExtractor.ExtractQuestionSim(question, neighbours);
             tagSim = new DenseMatrix(candidates.Count, candidates.Count);
             questionsim = new DenseVector(neighbours.Count);
         }

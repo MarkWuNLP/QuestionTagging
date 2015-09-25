@@ -7,9 +7,14 @@ using System.Threading.Tasks;
 
 namespace QuestionTagging
 {
-    class FeatureExtractor
+    interface IFeatureExtractor
     {
-        public static Matrix[] ExtractTagSim(List<string> tags)
+        Matrix[] ExtractTagSim(List<string> tags);
+        Vector[] ExtractQuestionSim(Question q, List<Question> neighbour);
+    }
+    class RandomFeatureExtractor:IFeatureExtractor
+    {
+        public Matrix[] ExtractTagSim(List<string> tags)
         {
             Matrix[] tagsimefeature = new Matrix[3];
             for (int i = 0; i < 3;i++)
@@ -20,7 +25,7 @@ namespace QuestionTagging
             return tagsimefeature;
         }
 
-        private static Matrix RandomTagFeature(int rowcount,int columncount)
+        private Matrix RandomTagFeature(int rowcount,int columncount)
         {
             MathNet.Numerics.Distributions.ContinuousUniform normal = new MathNet.Numerics.Distributions.ContinuousUniform();
             return (Matrix) Matrix.Build.Random(rowcount,columncount,normal);
@@ -29,7 +34,7 @@ namespace QuestionTagging
 
 
 
-        public static Vector[] ExtractQuestionSim(Question q, List<Question> neighbour)
+        public Vector[] ExtractQuestionSim(Question q, List<Question> neighbour)
         {
             Vector[] questionsimfeature = new Vector[3];
 
@@ -42,7 +47,7 @@ namespace QuestionTagging
             return questionsimfeature;
         }
 
-        private static Vector RandomQuestionFeature(int count)
+        private Vector RandomQuestionFeature(int count)
         {
             MathNet.Numerics.Distributions.ContinuousUniform normal = new MathNet.Numerics.Distributions.ContinuousUniform();
             return (Vector)Vector.Build.Random(count, normal);

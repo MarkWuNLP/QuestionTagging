@@ -1,6 +1,7 @@
 ﻿using MathNet.Numerics.LinearAlgebra.Double;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ namespace QuestionTagging
         Vector questionSimWeights; // denoted by v in paper
         Matrix[] DeriviationH;
         Vector DerivateForPi;
-
+        IFeatureExtractor featureExtractor;
         Matrix tagSim;
         Vector questionsim; 
         Vector tagsignificance;
@@ -48,6 +49,7 @@ namespace QuestionTagging
         {
             this.questions = questions;
             this.questionNeighbours = questionNeighbours;
+            featureExtractor = new RandomFeatureExtractor();
             for (int i = 0; i < questions.Count;i++ )
             {
                 ConstructCandidateTable(questionNeighbours[i]);
@@ -131,11 +133,11 @@ namespace QuestionTagging
                 }
                 for (int i = 0; i < QUESTIONFEATURENUM;i++)
                 {
-                    questionSimWeights[i] -= learningrate * Deriviate_W[i] + this.lamda * questionSimWeights[i];
+                    questionSimWeights[i] -= learningrate * (Deriviate_W[i] + this.lamda * questionSimWeights[i]);
                 }
                 for (int i = 0; i < TAGFEATURENUM;i++)
                 {
-                    tagSimWeights[i] -= learningrate * Deriviate_V[i] + this.lamda * tagSimWeights[i];
+                    tagSimWeights[i] -= learningrate * (Deriviate_V[i] + this.lamda * tagSimWeights[i]);
                 }
                 if(lastLoss-loss<StopGap)
                 {
@@ -146,19 +148,22 @@ namespace QuestionTagging
                     lastLoss = loss;
                 }
                 Console.WriteLine("loss:{0}", loss);
-
-                //Console.Write("Question Sim Weight:\t");
-                //double questionsim_weight = 0;
-                //for (int i = 0; i < QUESTIONFEATURENUM; i++)
-                //{
-                //    questionsim_weight += Math.Exp(questionSimWeights[i]);
-                //}
-                //for(int i=0;i<QUESTIONFEATURENUM;i++)
-                //{
-                //    Console.Write("{0}\t",Math.Exp(questionSimWeights[i])/questionsim_weight);
-                //}
-                //Console.WriteLine();
             }
+            PrintResult();
+        }
+        private void PrintResult()
+        {
+            StreamWriter sw = new StreamWriter("result.txt");
+            for(int i=0;i<QUESTIONFEATURENUM;i++)
+            {
+                sw.Write("QFeature{0}:{1}\t", i, questionSimWeights[i]);
+            }
+            sw.WriteLine();
+            for(int j=0;j<TAGFEATURENUM;j++)
+            {
+                sw.Write("TFeature{0}:{1}\t", j, tagSimWeights[j]);
+            }
+            sw.Close();
         }
 
         private Vector ComputeDeriviateOfV(string postag, string negtag)
@@ -327,12 +332,12 @@ namespace QuestionTagging
 
         private void ComputeTagSimFeature(Dictionary<string, int> dictionary)
         {
-            this.instanceTagSimFeatures.Add(FeatureExtractor.ExtractTagSim(dictionary.Keys.ToList()));
+            this.instanceTagSimFeatures.Add(this.featureExtractor.ExtractTagSim(dictionary.Keys.ToList()));
         }
 
         private void ComputeQuestionSimFeature(Question question, List<Question> list)
         {
-            this.instanceQuestionSimFeatures.Add(FeatureExtractor.ExtractQuestionSim(question, list));
+            this.instanceQuestionSimFeatures.Add(this.featureExtractor.ExtractQuestionSim(question, list));
         }
 
         private void Init(Question question, List<Question> neighbours)
