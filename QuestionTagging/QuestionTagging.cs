@@ -52,6 +52,9 @@ namespace QuestionTagging
             questionsim = new DenseVector(neighbours.Count);
         }
 
+        /// <summary>
+        /// equation 3 in the paper.
+        /// </summary>
         private void ComputeTagSim()
         {
 
@@ -74,7 +77,11 @@ namespace QuestionTagging
                 
             }
         }
-
+        /// <summary>
+        /// equation 2 in the paper
+        /// </summary>
+        /// <param name="question"></param>
+        /// <param name="neighbours"></param>
         private void ComputeQuestionSim(Question question, List<Question> neighbours)
         {
             for (int j = 0; j < neighbours.Count; j++)
@@ -86,6 +93,11 @@ namespace QuestionTagging
             }
         }
 
+        /// <summary>
+        /// Equation One in the paper
+        /// </summary>
+        /// <param name="question"></param>
+        /// <param name="neighbours"></param>
         private void RankingTags(Question question, List<Question> neighbours)
         {
             foreach(var candidate in candidates)
@@ -112,7 +124,7 @@ namespace QuestionTagging
                         q_t_t += tagSim[tagindex, t_index] * tag.Value;
                     }
                 }
-                tagScore.Add(candidate.Key,tagsignificance[candidate.Value]*(q_q_t+q_t+q_t_t));
+                tagScore.Add(candidate.Key,tagsignificance[candidate.Value] * (q_q_t+q_t+q_t_t));
             }
 
             var res = tagScore.OrderByDescending(x => x.Value);
@@ -136,7 +148,7 @@ namespace QuestionTagging
             }
         }
         /// <summary>
-        /// pagerank score for each tag
+        /// pagerank score for each tag, equation 4 in the paper
         /// </summary>
         /// <param name="neighbours"></param>
         private void ComputeTagSignificance(List<Question> neighbours)

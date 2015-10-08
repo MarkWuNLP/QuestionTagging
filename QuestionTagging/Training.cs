@@ -59,7 +59,15 @@ namespace QuestionTagging
             }
            
         }
-
+        /// <summary>
+        /// this is the implementation of algorithm 1 in the paper
+        /// </summary>
+        /// <param name="QFeatureNum"></param>
+        /// <param name="TFeatureNum"></param>
+        /// <param name="MaxIter"></param>
+        /// <param name="LearningRate"></param>
+        /// <param name="Lamda"></param>
+        /// <param name="StopGap"></param>
         public void Train(int QFeatureNum, int TFeatureNum, int MaxIter, double LearningRate, double Lamda, double StopGap)
         {
             this.QUESTIONFEATURENUM = QFeatureNum;
@@ -165,7 +173,12 @@ namespace QuestionTagging
             }
             sw.Close();
         }
-
+        /// <summary>
+        /// equation 10 in my paper
+        /// </summary>
+        /// <param name="postag"></param>
+        /// <param name="negtag"></param>
+        /// <returns></returns>
         private Vector ComputeDeriviateOfV(string postag, string negtag)
         {
             Vector posderivation = DenseVector.OfVector(tagsignificance[candidates[postag]] * ComputeDerivateOfVForTag(postag)
@@ -175,7 +188,11 @@ namespace QuestionTagging
 
             return (Vector)(negderivation - posderivation);
         }
-
+        /// <summary>
+        /// This is euqation 12 in my paper
+        /// </summary>
+        /// <param name="postag"></param>
+        /// <returns></returns>
         private Vector ComputeDerivateOfPiForTag(string postag)
         {
             var DerivateOfA = ComputeDerivateOfA();
@@ -191,6 +208,10 @@ namespace QuestionTagging
             return res;
         }
 
+        /// <summary>
+        /// equation 13 in the paper. This function gets the derivative of A respect to V
+        /// </summary>
+        /// <returns></returns>
         private Matrix[] ComputeDerivateOfA()
         {
             Matrix[] derivateofA = new Matrix[TAGFEATURENUM];
@@ -270,7 +291,12 @@ namespace QuestionTagging
         }
 
 
-
+        /// <summary>
+        /// Equation 7 in paper
+        /// </summary>
+        /// <param name="postag"></param>
+        /// <param name="negtag"></param>
+        /// <returns></returns>
         private Vector ComputeDeriviateOfW(string postag, string negtag)
         {
             Vector posderivation = ComputeDerivateOfWForTag(postag);
@@ -279,7 +305,11 @@ namespace QuestionTagging
             return (Vector)(tagsignificance[candidates[negtag]] * negderivation 
                 - tagsignificance[candidates[postag]] * posderivation);
         }
-
+        /// <summary>
+        /// equation 6 in my paper
+        /// </summary>
+        /// <param name="tag"></param>
+        /// <returns></returns>
         private Vector ComputeDerivateOfWForTag(string tag)
         {
             Vector res = new DenseVector(QUESTIONFEATURENUM);
@@ -389,7 +419,10 @@ namespace QuestionTagging
 
             }
         }
-
+        /// <summary>
+        /// this is function f in the paper
+        /// </summary>
+        /// <param name="question"></param>
         private void ComputeQuestionTagSimHeriusticlly(Question question)
         {
             tagQuestionSim = new Dictionary<string, double>();
@@ -400,7 +433,11 @@ namespace QuestionTagging
 
             }
         }
-
+        /// <summary>
+        /// equation 2 in the paper
+        /// </summary>
+        /// <param name="question"></param>
+        /// <param name="neighbours"></param>
         private void ComputeQuestionSim(Question question, List<Question> neighbours)
         {
             double sum = 0;
@@ -416,7 +453,11 @@ namespace QuestionTagging
                 }
             }
         }
-
+        /// <summary>
+        /// equation 1 in the paper
+        /// </summary>
+        /// <param name="question"></param>
+        /// <param name="neighbours"></param>
         private void RankingTags(Question question, List<Question> neighbours)
         {
             tagScore.Clear();
@@ -464,7 +505,7 @@ namespace QuestionTagging
             instanceCandidates.Add(candidates);
         }
         /// <summary>
-        /// pagerank score for each tag
+        /// pagerank score for each tag equation 4 in the paper
         /// </summary>
         /// <param name="neighbours"></param>
         private void ComputeTagSignificance(List<Question> neighbours)
