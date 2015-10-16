@@ -8,6 +8,10 @@ and tag similarity first. Then the project provides weight training component an
 * Input file format should follows the files format in the resource directory, which is  
   raw question \t tags \t question stem word
 * The users should implement feature extractor part for quesiton tagging, and also could replace the original ComputeQuestionTagSimHeriusticlly() function as want he wants.
- 
 
-Now The Author is busy writting comments for the algorithm to correspond with the equations in our paper.
+## Usage
+* I provide training and test component in this project. You could call Progrom.Train() to learn question and tag weights based on the training corpus. After acquiring weights, you could modify weights in QuestionTagging file and Run Tagging algorithm.
+
+##Output
+  In training process, the learning weights result will be printed on the Console. 
+  In question tagging process, the predicted tags for a question are shown ordered by their score
