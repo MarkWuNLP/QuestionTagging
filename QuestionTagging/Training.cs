@@ -49,9 +49,10 @@ namespace QuestionTagging
         {
             this.questions = questions;
             this.questionNeighbours = questionNeighbours;
-            featureExtractor = new RandomFeatureExtractor();
+            featureExtractor = new GoldenFeatureExtractor();
             for (int i = 0; i < questions.Count;i++ )
             {
+                featureExtractor.GetTruth(questions[i].RelatedTags);
                 ConstructCandidateTable(questionNeighbours[i]);
                 SampleUnrelatedTag(questions[i],questionNeighbours[i]);
                 ComputeQuestionSimFeature(questions[i],questionNeighbours[i]);
@@ -83,6 +84,7 @@ namespace QuestionTagging
             for (int t = 0; t < this.MAX_Iter; t++)
             {
                 loss = 0;
+                int incorrect_pair = 0;
                 DenseVector Deriviate_W = new DenseVector(QUESTIONFEATURENUM);
                 DenseVector Deriviate_V = new DenseVector(TAGFEATURENUM);
                 for (int i = 0; i < questions.Count; i++)
@@ -110,7 +112,7 @@ namespace QuestionTagging
                                 for (int j = 0; j < neighbours.Count; j++)
                                 {
                                     if (neighbours[j].RelatedTags.Contains(candidate.Key))
-                                        tmp_v[k] += questionSimFeatures[k][j];
+                                        tmp_v[k] = Math.Max(tmp_v[k], questionSimFeatures[k][j]);// We implement function g() by Max function
                                 }
                             }
                             tagQuestionFeature.Add(candidate.Key, tmp_v);
@@ -132,8 +134,9 @@ namespace QuestionTagging
                         {
                             if(tagScore[postag]<tagScore[negtag])
                             {
+                                incorrect_pair += 1;
                                 loss += -tagScore[postag] + tagScore[negtag];
-                                Deriviate_W +=DenseVector.OfVector(ComputeDeriviateOfW(postag, negtag));
+                                Deriviate_W += DenseVector.OfVector(ComputeDeriviateOfW(postag, negtag));
                                 Deriviate_V += DenseVector.OfVector(ComputeDeriviateOfV(postag, negtag));
                             }
                         }
@@ -141,11 +144,11 @@ namespace QuestionTagging
                 }
                 for (int i = 0; i < QUESTIONFEATURENUM;i++)
                 {
-                    questionSimWeights[i] -= learningrate * (Deriviate_W[i] + this.lamda * questionSimWeights[i]);
+                    questionSimWeights[i] -= learningrate * (Deriviate_W[i]);
                 }
                 for (int i = 0; i < TAGFEATURENUM;i++)
                 {
-                    tagSimWeights[i] -= learningrate * (Deriviate_V[i] + this.lamda * tagSimWeights[i]);
+                    tagSimWeights[i] -= learningrate * 0.1 * (Deriviate_V[i]);
                 }
                 if(lastLoss-loss<StopGap)
                 {
@@ -155,7 +158,13 @@ namespace QuestionTagging
                 {
                     lastLoss = loss;
                 }
-                Console.WriteLine("loss:{0}", loss);
+                Console.Write("loss:{0}\tIncorrect_Pair{1}\t", loss,incorrect_pair);
+                for (int i = 0; i < QUESTIONFEATURENUM; i++)
+                { Console.Write("QuestionFeature{1}:{0}\t", questionSimWeights[i],i); }
+                for (int i = 0; i < TAGFEATURENUM; i++)
+                { Console.Write("TagFeature{1}:{0}\t", tagSimWeights[i],i); }
+                Console.WriteLine();
+
             }
             PrintResult();
         }
@@ -199,7 +208,7 @@ namespace QuestionTagging
             Vector res = new DenseVector(TAGFEATURENUM);
             for (int i = 0; i < TAGFEATURENUM; i++)
             {
-                if(DerivateForPi==null)
+                //if(DerivateForPi==null)
                 {
                     DerivateForPi = DenseVector.OfVector(alpha * (SparseMatrix.CreateIdentity(candidates.Count) - alpha * TranslationMatrix).Inverse() * DerivateOfA[i] * tagsignificance);
                 }
@@ -386,7 +395,7 @@ namespace QuestionTagging
                     for(int j=0;j<neighbours.Count;j++)
                     {
                         if(neighbours[j].RelatedTags.Contains(candidate.Key))
-                            tmp_v[i] += questionSimFeatures[i][j];
+                            tmp_v[i] = Math.Max(tmp_v[i], questionSimFeatures[i][j]);
                     }
                 }
                 tagQuestionFeature.Add(candidate.Key, tmp_v);
@@ -473,7 +482,8 @@ namespace QuestionTagging
                 {
                     if (neighbour.RelatedTags.Contains(candidate.Key))
                     {
-                        q_q_t += questionsim[neighbours.IndexOf(neighbour)];
+                        if(q_q_t < questionsim[neighbours.IndexOf(neighbour)])
+                            q_q_t = questionsim[neighbours.IndexOf(neighbour)];
                     }
                 }
                 foreach (var tag in tagQuestionSim)
