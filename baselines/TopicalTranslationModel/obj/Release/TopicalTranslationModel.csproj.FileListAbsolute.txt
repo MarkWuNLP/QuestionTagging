@@ -1,0 +1,17 @@
+E:\v-wuyu\project\TopicModel-Final\TopicalTranslationModel\bin\Release\TopicalTranslationModel.exe.config
+E:\v-wuyu\project\TopicModel-Final\TopicalTranslationModel\bin\Release\TopicalTranslationModel.exe
+E:\v-wuyu\project\TopicModel-Final\TopicalTranslationModel\bin\Release\TopicalTranslationModel.pdb
+E:\v-wuyu\project\TopicModel-Final\TopicalTranslationModel\bin\Release\KenelNLP.dll
+E:\v-wuyu\project\TopicModel-Final\TopicalTranslationModel\bin\Release\WordBreaker.dll
+E:\v-wuyu\project\TopicModel-Final\TopicalTranslationModel\bin\Release\WordBreaker.pdb
+E:\v-wuyu\project\TopicModel-Final\TopicalTranslationModel\obj\Release\TopicalTranslationModel.exe
+E:\v-wuyu\project\TopicModel-Final\TopicalTranslationModel\obj\Release\TopicalTranslationModel.pdb
+E:\v-wuyu\project\CSharpCode\TopicModel-Final\TopicalTranslationModel\bin\Release\TopicalTranslationModel.exe.config
+E:\v-wuyu\project\CSharpCode\TopicModel-Final\TopicalTranslationModel\bin\Release\TopicalTranslationModel.exe
+E:\v-wuyu\project\CSharpCode\TopicModel-Final\TopicalTranslationModel\bin\Release\TopicalTranslationModel.pdb
+E:\v-wuyu\project\CSharpCode\TopicModel-Final\TopicalTranslationModel\bin\Release\KenelNLP.dll
+E:\v-wuyu\project\CSharpCode\TopicModel-Final\TopicalTranslationModel\bin\Release\WordBreaker.dll
+E:\v-wuyu\project\CSharpCode\TopicModel-Final\TopicalTranslationModel\bin\Release\WordBreaker.pdb
+E:\v-wuyu\project\CSharpCode\TopicModel-Final\TopicalTranslationModel\obj\Release\TopicalTranslationModel.csprojResolveAssemblyReference.cache
+E:\v-wuyu\project\CSharpCode\TopicModel-Final\TopicalTranslationModel\obj\Release\TopicalTranslationModel.exe
+E:\v-wuyu\project\CSharpCode\TopicModel-Final\TopicalTranslationModel\obj\Release\TopicalTranslationModel.pdb
