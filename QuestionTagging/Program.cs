@@ -23,6 +23,7 @@ namespace QuestionTagging
                     ,q_tmp[2].Split('|').ToList()
                     ,q_tmp[1].Split(new string[]{"; "},StringSplitOptions.RemoveEmptyEntries).ToList()
                     );
+                Console.WriteLine(q_tmp[0]);
                 while(true)
                 {
                     Question n;
@@ -39,6 +40,7 @@ namespace QuestionTagging
                     neighbours.Add(n);
                 }
                 QuestionTagging tagger = new QuestionTagging();
+                Console.WriteLine("Tags:");
                 tagger.TagQuestion(q,neighbours.GetRange(0,50));
             }
         }
@@ -47,7 +49,7 @@ namespace QuestionTagging
         {
             List<Question> TrainingInstances = new List<Question>();
             List<List<Question>> InstancesNeighbours = new List<List<Question>>();
-            StreamReader sr = new StreamReader(@"..\..\..\resource\AAAI2016.train");
+            StreamReader sr = new StreamReader(@"..\..\..\resource\train.txt");
             while (!sr.EndOfStream)
             {
                 Question q = null;
@@ -98,7 +100,9 @@ namespace QuestionTagging
 
         static void Main(string[] args)
         {            
-            Program.Train();
+            //Program.Train();
+
+            Program.Test();
         }
     }
 }

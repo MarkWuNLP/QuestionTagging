@@ -16,3 +16,13 @@ D:\GitHubProject\QuestionTagging\QuestionTagging\QuestionTagging\bin\Debug\MathN
 D:\GitHubProject\QuestionTagging\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.Data.Text.dll
 D:\GitHubProject\QuestionTagging\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.IO.dll
 D:\GitHubProject\QuestionTagging\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagging.csprojResolveAssemblyReference.cache
+D:\我的文档\QuestionTagging\QuestionTagging\bin\Debug\QuestionTagging.exe.config
+D:\我的文档\QuestionTagging\QuestionTagging\bin\Debug\QuestionTagging.exe
+D:\我的文档\QuestionTagging\QuestionTagging\bin\Debug\QuestionTagging.pdb
+D:\我的文档\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.Data.Text.dll
+D:\我的文档\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.dll
+D:\我的文档\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.IO.dll
+D:\我的文档\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.xml
+D:\我的文档\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagging.csprojResolveAssemblyReference.cache
+D:\我的文档\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagging.exe
+D:\我的文档\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagging.pdb

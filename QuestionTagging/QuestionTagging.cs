@@ -126,11 +126,13 @@ namespace QuestionTagging
                 }
                 tagScore.Add(candidate.Key,tagsignificance[candidate.Value] * (q_q_t+q_t+q_t_t));
             }
-
+            int i = 0;
             var res = tagScore.OrderByDescending(x => x.Value);
             foreach(var ele in res)
             {
                 Console.WriteLine(ele);
+                if (i++ > 10)
+                    break;
             }
         }
 
