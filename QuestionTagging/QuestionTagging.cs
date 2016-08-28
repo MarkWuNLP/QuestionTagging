@@ -38,6 +38,12 @@ namespace QuestionTagging
             RankingTags(question, neighbours);
         }
 
+        public void SetParameters(Vector q, Vector t)
+        {
+            questionSimWeights = q;
+            tagSimWeights = t;
+        }
+
         private void Init(Question question, List<Question> neighbours)
         {
             featureExtractor = new RandomFeatureExtractor();

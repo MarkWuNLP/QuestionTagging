@@ -37,7 +37,7 @@ namespace QuestionTagging
                 for (int j=0;j<tags.Count;j++)
                 {
                     if(TruthTags.Contains(tags[i]))
-                    tagsimefeature[0][i, j] = 10;
+                        tagsimefeature[0][i, j] = 1;
                 }
             }
 
@@ -68,7 +68,7 @@ namespace QuestionTagging
                 foreach (var t in TruthTags)
                 {
                     if (neighbour[i].RelatedTags.Contains(t))
-                        questionsimfeature[0][i] = 3;
+                        questionsimfeature[0][i] = 1;
                 }
             }
 

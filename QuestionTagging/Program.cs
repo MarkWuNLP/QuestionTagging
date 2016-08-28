@@ -94,15 +94,31 @@ namespace QuestionTagging
             double LearningRate = double.Parse(ConfigurationManager.AppSettings["LearningRate"]);
             double Lamda = double.Parse(ConfigurationManager.AppSettings["Lamda"]);
             double StopGap = double.Parse(ConfigurationManager.AppSettings["StopGap"]);
+            double decay = double.Parse(ConfigurationManager.AppSettings["decay"]);
 
-            t.Train(QFeatureNum, TFeatureNum, Max_Iter, LearningRate, Lamda, StopGap);
+            t.Train(QFeatureNum, TFeatureNum, Max_Iter, LearningRate, Lamda, StopGap,decay);
+
+            StreamWriter sw = new StreamWriter("questionfeature.weight");
+            for(int i=0;i<QFeatureNum;i++)
+            {
+                sw.WriteLine(t.questionSimWeights[i]);
+                Console.WriteLine(t.questionSimWeights[i]);
+            }
+            sw.Close();
+            sw = new StreamWriter("tagfeature.weight");
+            for (int i = 0; i < QFeatureNum; i++)
+            {
+                sw.WriteLine(t.questionSimWeights[i]);
+                Console.WriteLine(t.tagSimWeights[i]);
+            }
+            sw.Close();
         }
 
         static void Main(string[] args)
         {            
-            //Program.Train();
+            Program.Train();
 
-            Program.Test();
+            //Program.Test();
         }
     }
 }

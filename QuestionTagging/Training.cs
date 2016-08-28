@@ -22,8 +22,8 @@ namespace QuestionTagging
 
         Matrix[] tagSimFeatures; //xi
         Vector[] questionSimFeatures; //theta
-        Vector tagSimWeights; //denoted by w in paper
-        Vector questionSimWeights; // denoted by v in paper
+        public Vector tagSimWeights; //denoted by w in paper
+        public Vector questionSimWeights; // denoted by v in paper
         Matrix[] DeriviationH;
         Vector DerivateForPi;
         IFeatureExtractor featureExtractor;
@@ -69,7 +69,8 @@ namespace QuestionTagging
         /// <param name="LearningRate"></param>
         /// <param name="Lamda"></param>
         /// <param name="StopGap"></param>
-        public void Train(int QFeatureNum, int TFeatureNum, int MaxIter, double LearningRate, double Lamda, double StopGap)
+        public void Train(int QFeatureNum, int TFeatureNum, int MaxIter, double LearningRate, double Lamda, double StopGap
+            ,double decay = 1.0)
         {
             this.QUESTIONFEATURENUM = QFeatureNum;
             this.TAGFEATURENUM = TFeatureNum;
@@ -141,24 +142,29 @@ namespace QuestionTagging
                             }
                         }
                     }
+
+
+                    for (int i2 = 0; i2 < QUESTIONFEATURENUM; i2++)
+                    {
+                        questionSimWeights[i2] -= (learningrate *(Math.Pow(decay,t)) * Deriviate_W[i2]);
+                    }
+                    for (int i2 = 0; i2 < TAGFEATURENUM; i2++)
+                    {
+                        tagSimWeights[i2] -= learningrate * (Math.Pow(decay, t))  * (Deriviate_V[i2]);
+                    }
+                    Deriviate_W = new DenseVector(QUESTIONFEATURENUM);
+                    Deriviate_V = new DenseVector(TAGFEATURENUM);
                 }
-                for (int i = 0; i < QUESTIONFEATURENUM;i++)
-                {
-                    questionSimWeights[i] -= learningrate * (Deriviate_W[i]);
-                }
-                for (int i = 0; i < TAGFEATURENUM;i++)
-                {
-                    tagSimWeights[i] -= learningrate * 0.1 * (Deriviate_V[i]);
-                }
+
                 if(lastLoss-loss<StopGap)
                 {
-                    break;
+                   // break;
                 }
                 else
                 {
                     lastLoss = loss;
                 }
-                Console.Write("loss:{0}\tIncorrect_Pair{1}\t", loss,incorrect_pair);
+                Console.Write("loss:{0}\tIncorrect_Pair:{1}\t", loss,incorrect_pair);
                 for (int i = 0; i < QUESTIONFEATURENUM; i++)
                 { Console.Write("QuestionFeature{1}:{0}\t", questionSimWeights[i],i); }
                 for (int i = 0; i < TAGFEATURENUM; i++)
