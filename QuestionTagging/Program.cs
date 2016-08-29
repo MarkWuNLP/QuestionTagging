@@ -33,6 +33,11 @@ namespace QuestionTagging
                     else
                     {
                         string[] tmp = neighbour.Split('\t');
+                        if(tmp.Length<3)
+                        {
+                            //Console.WriteLine(neighbour);
+                            continue;
+                        }
                         n = new Question(tmp[0], tmp[2].Split('|').ToList(),
                             tmp[1].Split(new string[] { "; " }, StringSplitOptions.RemoveEmptyEntries).ToList());
                         
@@ -116,9 +121,9 @@ namespace QuestionTagging
 
         static void Main(string[] args)
         {            
-            Program.Train();
+            //Program.Train();
 
-            //Program.Test();
+            Program.Test();
         }
     }
 }

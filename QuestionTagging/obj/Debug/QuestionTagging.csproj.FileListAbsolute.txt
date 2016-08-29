@@ -26,3 +26,13 @@ D:\我的文档\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.xml
 D:\我的文档\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagging.csprojResolveAssemblyReference.cache
 D:\我的文档\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagging.exe
 D:\我的文档\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagging.pdb
+D:\users\v-wuyu\project\CShrapProject\QuestionTagging\QuestionTagging\bin\Debug\QuestionTagging.exe.config
+D:\users\v-wuyu\project\CShrapProject\QuestionTagging\QuestionTagging\bin\Debug\QuestionTagging.exe
+D:\users\v-wuyu\project\CShrapProject\QuestionTagging\QuestionTagging\bin\Debug\QuestionTagging.pdb
+D:\users\v-wuyu\project\CShrapProject\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.Data.Text.dll
+D:\users\v-wuyu\project\CShrapProject\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.dll
+D:\users\v-wuyu\project\CShrapProject\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.IO.dll
+D:\users\v-wuyu\project\CShrapProject\QuestionTagging\QuestionTagging\bin\Debug\MathNet.Numerics.xml
+D:\users\v-wuyu\project\CShrapProject\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagging.csprojResolveAssemblyReference.cache
+D:\users\v-wuyu\project\CShrapProject\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagging.exe
+D:\users\v-wuyu\project\CShrapProject\QuestionTagging\QuestionTagging\obj\Debug\QuestionTagging.pdb
